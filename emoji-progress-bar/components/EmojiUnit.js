@@ -1,16 +1,21 @@
 class EmojiUnit extends HTMLElement {
+  // An array of all of the attributes whose augmentations to observe
+  static get observedAttributes() {
+    return ['state'];
+  }
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
 
     // Properties
     this.states = ['🥚', '🐣', '🐥', '🐔', '🍗'];
-    this.currState = states[0];
+    this.currState = this.states[0];
     this.connected = false;
 
     // Render the state in markup
-    const renderedState = document.createElement('span');
-    renderedState.innerHTML = this.currState;
+    this.renderedState = document.createElement('span');
+    this.render();
 
     // Create some styles for our rendered state
     const styles = document.createElement('style');
@@ -22,7 +27,7 @@ class EmojiUnit extends HTMLElement {
     `;
 
     // Attach the markup & styles to the shadow root
-    this.shadowRoot.append(styles, renderedState);
+    this.shadowRoot.append(styles, this.renderedState);
   }
 
   // Renders the component when it's added to the DOM
@@ -37,8 +42,15 @@ class EmojiUnit extends HTMLElement {
     this.connected = false;
   }
 
+  // Re-render the element if the percent has changed
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue == newValue || !this.connected) return;
+    this.currState = this.states[Number(newValue) % this.states.length];
+    this.render();
+  }
+
   render() {
-    // this.
+    this.renderedState.innerHTML = this.currState;
   }
 }
 

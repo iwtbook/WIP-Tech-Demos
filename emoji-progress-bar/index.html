@@ -10,13 +10,41 @@
   <!-- Emoji Progress Bar -->
   <script src="components/EmojiUnit.js" type="module"></script>
   <script src="components/EmojiProgress.js" type="module"></script>
+
+  <style>
+    * {
+      font-family: sans-serif;
+    }
+
+    div {
+      column-gap: 10px;
+      display: flex;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 380px;
+    }
+  </style>
 </head>
 
 <body>
-  <emoji-progress percent="100"></emoji-progress>
+  <emoji-progress percent="0"></emoji-progress>
+
+  <div>
+    <label for="progress-slider">Progress:</label>
+    <input type="range" min="0" max="100" id="progress-slider" value="0">
+    <output id="progress-slider-num">0%</output>
+  </div>
 
   <script>
-    var ep = document.querySelector('emoji-progress');
+    let emojiProgress = document.querySelector('emoji-progress');
+    let slider = document.querySelector('input[type="range"]');
+    let output = document.querySelector('output');
+    slider.addEventListener('input', (e) => {
+      emojiProgress.setAttribute('percent', slider.value);
+      output.innerHTML = slider.value + '%';
+    });
   </script>
 </body>
 
