@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ZingGrid</title>
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="styles.css" />
+		<!-- Scripts -->
+		<script src="zinggrid.min.js" type="module"></script>
+		<script src="PasswordVisibility.js" type="module"></script>
+
+		<style>
+			h2 {
+				font-family: sans-serif;
+			}
+
+			zing-grid {
+				margin-bottom: 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Default ZingGrid</h2>
+		<zing-grid editor-controls>
+			<zg-colgroup>
+				<zg-column index="employeeId" header="ID" type="number"></zg-column>
+				<zg-column
+					index="firstName,lastName"
+					header="Employee Name"
+					type="custom"
+				>
+					<template> [[index.lastName]], [[index.firstName]] </template>
+				</zg-column>
+				<zg-column index="email" header="Email" type="email"></zg-column>
+				<zg-column
+					index="password"
+					header="Password"
+					type="password"
+				></zg-column>
+			</zg-colgroup>
+			<zg-data
+				data='
+					[{
+						"firstName" : "Darth",
+						"lastName" : "Vader",
+						"email" : "lordvader@deathstar.gov",
+						"password" : "Padme4Ever",
+						"employeeId" : 3
+					},
+					{
+						"firstName" : "Daffy",
+						"lastName" : "Duck",
+						"email" : "daffy.duck@looneytunes.com",
+						"password" : "Daffy!",
+						"employeeId" : 2
+					},
+					{
+						"firstName" : "Donald",
+						"lastName" : "Duck",
+						"email" : "donald.duck@disney.com",
+						"password" : "Bigly",
+						"employeeId" : 1
+					}]'
+			></zg-data>
+		</zing-grid>
+		<h2>With Component</h2>
+		<zing-grid editor-controls>
+			<zg-colgroup>
+				<zg-column index="employeeId" header="ID" type="number"></zg-column>
+				<zg-column
+					index="firstName,lastName"
+					header="Employee Name"
+					type="custom"
+				>
+					<template> [[index.lastName]], [[index.firstName]] </template>
+				</zg-column>
+				<zg-column index="email" header="Email" type="email"></zg-column>
+				<zg-column
+					index="password"
+					header="Password"
+					type="password-visibility"
+				></zg-column>
+			</zg-colgroup>
+			<zg-data
+				data='
+					[{
+						"firstName" : "Darth",
+						"lastName" : "Vader",
+						"email" : "lordvader@deathstar.gov",
+						"password" : "Padme4Ever",
+						"employeeId" : 3
+					},
+					{
+						"firstName" : "Daffy",
+						"lastName" : "Duck",
+						"email" : "daffy.duck@looneytunes.com",
+						"password" : "Daffy!",
+						"employeeId" : 2
+					},
+					{
+						"firstName" : "Donald",
+						"lastName" : "Duck",
+						"email" : "donald.duck@disney.com",
+						"password" : "Bigly",
+						"employeeId" : 1
+					}]'
+			></zg-data>
+		</zing-grid>
+		<script type="module">
+			function pvRenderer(pw, cellRef, $cell) {
+				return pw.replace(/./g, '*');
+			}
+
+			let editor = {
+				init($cell, editorField) {
+					let oDOMInput = document.createElement('password-visibility');
+					oDOMInput.innerHTML = `
+					<label for="password" style="display:none">Password</label>
+						<input
+							type="password"
+							name="password"
+							id="password"
+							slot="password"
+							spellcheck="false"
+						/>
+					`;
+					editorField.appendChild(oDOMInput);
+				},
+
+				onOpen($cell, editorField, mData) {
+					let oDOMInput = editorField.querySelector('input');
+					if (!mData) {
+						mData = editorField.value || '';
+					}
+					oDOMInput.value = String(mData);
+				},
+
+				onClose(editorField) {
+					return editorField.querySelector('input').value;
+				},
+			};
+
+			ZingGrid.registerCellType('password-visibility', {
+				editor: editor,
+				renderer: pvRenderer,
+			});
+		</script>
+	</body>
+</html>

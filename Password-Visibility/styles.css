@@ -1,0 +1,23 @@
+/* stlyes.css */
+
+password-visibility {
+	--pv-input-width: 100%;
+	width: 100%;
+}
+
+password-visibility:not(:defined) {
+	display: inline-grid;
+	font-family: sans-serif;
+}
+
+password-visibility:not(:defined)>label {
+	margin-bottom: 5px;
+}
+
+password-visibility:not(:defined)>input {
+	border: 1px solid rgb(118, 118, 118);
+	border-radius: 2px;
+	font-family: monospace;
+	height: 25px;
+	padding: 0 0 0 5px;
+}

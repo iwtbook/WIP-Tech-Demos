@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Password Visibility</title>
+		<style>
+			password-visibility:not(:defined) {
+				display: inline-grid;
+				font-family: sans-serif;
+			}
+
+			password-visibility:not(:defined) > label {
+				margin-bottom: 5px;
+			}
+
+			password-visibility:not(:defined) > input {
+				border: 1px solid rgb(118, 118, 118);
+				border-radius: 2px;
+				font-family: monospace;
+				height: 25px;
+				padding: 0 0 0 5px;
+			}
+		</style>
+		<script src="./PasswordVisibility.js" type="module"></script>
+	</head>
+	<body>
+		<password-visibility>
+			<label for="password" slot="label">Password</label>
+			<input type="password" name="password" id="password" slot="password" />
+		</password-visibility>
+	</body>
+</html>
